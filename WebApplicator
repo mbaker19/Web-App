@@ -1,0 +1,67 @@
+#!/usr/bin/python3
+
+from tkinter import *
+
+class Web:
+    def __init__(self):
+        self.current= ''
+        self.newtext= True
+        self.pending= False
+        self.final= ''
+        self.eq= False
+
+    def display(self, value):
+        textbox.delete(0, END)
+        textbox.insert(0, value)
+
+ def cancel(self):
+        self.eq= False
+        self.current="0"
+        self.display(' ')
+        self.newtext= True
+
+    def all_cancel(self):
+        self.cancel()
+        self.total= 0
+
+    def browse(self):
+        self.newtext= False
+        self.eq= True
+        self.pending= True
+        self.current= textbox.get()
+        import webbrowser
+        url= 'http://'+self.current
+        webbrowser.open(url)
+
+ def conduct(self, opt):
+        import webbrowser
+        self.final= opt
+        if self.final== "Go" and self.pending== True:
+            if 'com' or 'edu' or 'org' or 'gov' in self.current:
+                self.browse()
+        elif self.final== "clear":
+            self.all_cancel()
+
+
+
+search= Web()
+root= Tk()
+root.geometry('200x100')
+web= Frame(root)
+web.grid()
+
+btn1= Button(web, text= "Go")
+btn1["command"] = lambda: search.browse()
+btn1.grid(row= 2, column= 1, pady= 5)
+
+btn2= Button(web, text= "clear")
+btn2["command"] = lambda: search.conduct("clear")
+btn2.grid(row= 2, column= 2, pady= 5)
+
+
+root.title("Web App")
+textbox= Entry(web, justify= RIGHT)
+textbox.grid(row= 0, column= 0, columnspan= 3, pady= 5)
+textbox.insert(0, ' ')
+
+root.mainloop()
